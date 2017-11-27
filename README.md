@@ -3,7 +3,7 @@
 
 A Generic Entity Framework 6 data repository for .NET 4.5 supporting both sync and async methods
 
-#NOTA: modificato da me per .NET CORE 2.0
+- NOTA: modificato da me per .NET CORE 2.0
 
 #Usage
 Include the BaseService.cs class in your application and set the appropriate namespace.
