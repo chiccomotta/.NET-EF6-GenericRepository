@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace com.yourapp.data.services
 {
-    public class BaseService<TObject> where TObject : class
+    public class BaseRepository<T> where T : class
     {
-        protected DataContext _context;
+        protected DbContext _context;
 
         /// <summary>
-        /// The contructor requires an open DataContext to work with
+        /// The contructor requires an open DbContext to work with
         /// </summary>
-        /// <param name="context">An open DataContext</param>
-        public BaseService(DataContext context)
+        /// <param name="context">An open DbContext</param>
+        public BaseRepository(DbContext context)
         {
             _context = context;
         }
@@ -25,9 +25,9 @@ namespace com.yourapp.data.services
         /// <remarks>Synchronous</remarks>
         /// <param name="id">The primary key of the object to fetch</param>
         /// <returns>A single object with the provided primary key or null</returns>
-        public TObject Get(int id)
+        public T Get(int id)
         {
-            return _context.Set<TObject>().Find(id);
+            return _context.Set<T>().Find(id);
         }
         /// <summary>
         /// Returns a single object with a primary key of the provided id
@@ -35,27 +35,27 @@ namespace com.yourapp.data.services
         /// <remarks>Asynchronous</remarks>
         /// <param name="id">The primary key of the object to fetch</param>
         /// <returns>A single object with the provided primary key or null</returns>
-        public async Task<TObject> GetAsync(int id)
+        public async Task<T> GetAsync(int id)
         {
-            return await _context.Set<TObject>().FindAsync(id);
+            return await _context.Set<T>().FindAsync(id);
         }
         /// <summary>
         /// Gets a collection of all objects in the database
         /// </summary>
         /// <remarks>Synchronous</remarks>
         /// <returns>An ICollection of every object in the database</returns>
-        public ICollection<TObject> GetAll()
+        public ICollection<T> GetAll()
         {
-            return _context.Set<TObject>().ToList();
+            return _context.Set<T>().ToList();
         }
         /// <summary>
         /// Gets a collection of all objects in the database
         /// </summary>
         /// <remarks>Asynchronous</remarks>
         /// <returns>An ICollection of every object in the database</returns>
-        public async Task<ICollection<TObject>> GetAllAsync()
+        public async Task<ICollection<T>> GetAllAsync()
         {
-            return await _context.Set<TObject>().ToListAsync();
+            return await _context.Set<T>().ToListAsync();
         }
         /// <summary>
         /// Returns a single object which matches the provided expression
@@ -64,9 +64,9 @@ namespace com.yourapp.data.services
         /// <param name="match">A Linq expression filter to find a single result</param>
         /// <returns>A single object which matches the expression filter. 
         /// If more than one object is found or if zero are found, null is returned</returns>
-        public TObject Find(Expression<Func<TObject, bool>> match)
+        public T Find(Expression<Func<T, bool>> match)
         {
-            return _context.Set<TObject>().SingleOrDefault(match);
+            return _context.Set<T>().SingleOrDefault(match);
         }
         /// <summary>
         /// Returns a single object which matches the provided expression
@@ -75,9 +75,9 @@ namespace com.yourapp.data.services
         /// <param name="match">A Linq expression filter to find a single result</param>
         /// <returns>A single object which matches the expression filter. 
         /// If more than one object is found or if zero are found, null is returned</returns>
-        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match)
+        public async Task<T> FindAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<TObject>().SingleOrDefaultAsync(match);
+            return await _context.Set<T>().SingleOrDefaultAsync(match);
         }
         /// <summary>
         /// Returns a collection of objects which match the provided expression
@@ -85,9 +85,9 @@ namespace com.yourapp.data.services
         /// <remarks>Synchronous</remarks>
         /// <param name="match">A linq expression filter to find one or more results</param>
         /// <returns>An ICollection of object which match the expression filter</returns>
-        public ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match)
+        public ICollection<T> FindAll(Expression<Func<T, bool>> match)
         {
-            return _context.Set<TObject>().Where(match).ToList();
+            return _context.Set<T>().Where(match).ToList();
         }
         /// <summary>
         /// Returns a collection of objects which match the provided expression
@@ -95,9 +95,9 @@ namespace com.yourapp.data.services
         /// <remarks>Asynchronous</remarks>
         /// <param name="match">A linq expression filter to find one or more results</param>
         /// <returns>An ICollection of object which match the expression filter</returns>
-        public async Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match)
+        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<TObject>().Where(match).ToListAsync();
+            return await _context.Set<T>().Where(match).ToListAsync();
         }
         /// <summary>
         /// Inserts a single object to the database and commits the change
@@ -105,9 +105,9 @@ namespace com.yourapp.data.services
         /// <remarks>Synchronous</remarks>
         /// <param name="t">The object to insert</param>
         /// <returns>The resulting object including its primary key after the insert</returns>
-        public TObject Add(TObject t)
+        public T Add(T t)
         {
-            _context.Set<TObject>().Add(t);
+            _context.Set<T>().Add(t);
             _context.SaveChanges();
             return t;
         }
@@ -117,9 +117,9 @@ namespace com.yourapp.data.services
         /// <remarks>Asynchronous</remarks>
         /// <param name="t">The object to insert</param>
         /// <returns>The resulting object including its primary key after the insert</returns>
-        public async Task<TObject> AddAsync(TObject t)
+        public async Task<T> AddAsync(T t)
         {
-            _context.Set<TObject>().Add(t);
+            _context.Set<T>().Add(t);
             await _context.SaveChangesAsync();
             return t;
         }
@@ -129,9 +129,9 @@ namespace com.yourapp.data.services
         /// <remarks>Synchronous</remarks>
         /// <param name="tList">An IEnumerable list of objects to insert</param>
         /// <returns>The IEnumerable resulting list of inserted objects including the primary keys</returns>
-        public IEnumerable<TObject> AddAll(IEnumerable<TObject> tList)
+        public IEnumerable<T> AddAll(IEnumerable<T> tList)
         {
-            _context.Set<TObject>().AddRange(tList);
+            _context.Set<T>().AddRange(tList);
             _context.SaveChanges();
             return tList;
         }
@@ -141,9 +141,9 @@ namespace com.yourapp.data.services
         /// <remarks>Asynchronous</remarks>
         /// <param name="tList">An IEnumerable list of objects to insert</param>
         /// <returns>The IEnumerable resulting list of inserted objects including the primary keys</returns>
-        public async Task<IEnumerable<TObject>> AddAllAsync(IEnumerable<TObject> tList)
+        public async Task<IEnumerable<T>> AddAllAsync(IEnumerable<T> tList)
         {
-            _context.Set<TObject>().AddRange(tList);
+            _context.Set<T>().AddRange(tList);
             await _context.SaveChangesAsync();
             return tList;
         }
@@ -154,12 +154,12 @@ namespace com.yourapp.data.services
         /// <param name="updated">The updated object to apply to the database</param>
         /// <param name="key">The primary key of the object to update</param>
         /// <returns>The resulting updated object</returns>
-        public TObject Update(TObject updated, int key)
+        public T Update(T updated, int key)
         {
             if (updated == null)
                 return null;
 
-            TObject existing = _context.Set<TObject>().Find(key);
+            T existing = _context.Set<T>().Find(key);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(updated);
@@ -174,12 +174,12 @@ namespace com.yourapp.data.services
         /// <param name="updated">The updated object to apply to the database</param>
         /// <param name="key">The primary key of the object to update</param>
         /// <returns>The resulting updated object</returns>
-        public async Task<TObject> UpdateAsync(TObject updated, int key)
+        public async Task<T> UpdateAsync(T updated, int key)
         {
             if (updated == null)
                 return null;
 
-            TObject existing = await _context.Set<TObject>().FindAsync(key);
+            T existing = await _context.Set<T>().FindAsync(key);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(updated);
@@ -192,9 +192,9 @@ namespace com.yourapp.data.services
         /// </summary>
         /// <remarks>Synchronous</remarks>
         /// <param name="t">The object to delete</param>
-        public void Delete(TObject t)
+        public void Delete(T t)
         {
-            _context.Set<TObject>().Remove(t);
+            _context.Set<T>().Remove(t);
             _context.SaveChanges();
         }
         /// <summary>
@@ -202,9 +202,9 @@ namespace com.yourapp.data.services
         /// </summary>
         /// <remarks>Asynchronous</remarks>
         /// <param name="t">The object to delete</param>
-        public async Task<int> DeleteAsync(TObject t)
+        public async Task<int> DeleteAsync(T t)
         {
-            _context.Set<TObject>().Remove(t);
+            _context.Set<T>().Remove(t);
             return await _context.SaveChangesAsync();
         }
         
@@ -215,7 +215,7 @@ namespace com.yourapp.data.services
         /// <returns>The count of the number of objects</returns>
         public int Count()
         {
-            return _context.Set<TObject>().Count();
+            return _context.Set<T>().Count();
         }
         /// <summary>
         /// Gets the count of the number of objects in the databse
@@ -224,7 +224,7 @@ namespace com.yourapp.data.services
         /// <returns>The count of the number of objects</returns>
         public async Task<int> CountAsync()
         {
-            return await _context.Set<TObject>().CountAsync();
+            return await _context.Set<T>().CountAsync();
         }
     }
 }
