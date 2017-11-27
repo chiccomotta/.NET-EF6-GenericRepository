@@ -11,7 +11,7 @@ Include the BaseService.cs class in your application and set the appropriate nam
 Inherit from BaseService in your Service classes and initialize the constructor and base constructor with a data context.
 
 ```C#
-public class CategoryService : BaseService<Category>
+public class CategoryRepository : BaseRepository<Category>
 {
     public CategoryService(MyDataContext context)
         : base(context)
